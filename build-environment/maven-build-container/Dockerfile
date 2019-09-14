@@ -11,5 +11,5 @@ RUN curl -L https://developer.axonivy.com/permalink/nightly/axonivy-engine-slim.
     rm /tmp/engine.zip
 
 # cache maven dependencies
-ADD pom.xml /tmp/project
-RUN mvn -f /tmp/project dependency:go-offline -B
+ADD . /tmp/project
+RUN mvn -f /tmp/project verify dependency:go-offline -B
