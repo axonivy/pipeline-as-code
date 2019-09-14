@@ -1,0 +1,35 @@
+pipeline {
+  agent {
+    docker {
+      image 'maven:3.6.2'
+    }
+  }
+
+  triggers {
+    cron '@midnight'
+    pollSCM '@hourly'
+  }
+
+  stages {
+    stage('packaging') {
+      steps {
+        dir ('quick-start-tutorial') {
+      	  sh 'mvn clean package -B'
+          archiveArtifacts 'target/*.iar'
+        }
+      }
+    }
+
+    stage('deploy') {
+      steps {
+        dir ('quick-start-tutorial') {
+          sh 'curl -X POST ' +
+            'http://ivy:8080/ivy/api/system/apps/my-demo-app ' +
+            '-u admin:admin ' +
+            '-H \'X-Requested-By: curl\' ' +
+            '-F fileToDeploy=@target/quick-start-tutorial-7.4.0-SNAPSHOT.iar'
+        }
+      }
+    }
+  }
+}
