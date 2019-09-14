@@ -23,6 +23,14 @@ pipeline {
 
     stage ('preview') {
       steps {
+        dir ('quick-start-tutorial') {
+          sh 'curl -X POST ' +
+            'http://ivy-test:8080/ivy/api/system/apps/my-demo-app ' +
+            '-u admin:admin ' +
+            '-H \'X-Requested-By: curl\' ' +
+            '-F fileToDeploy=@target/quick-start-tutorial-7.4.0-SNAPSHOT.iar'
+        }
+
         timeout(time: 2, unit: "HOURS") {
           input message: 'Deploy to production?', ok: 'Yes'
         }

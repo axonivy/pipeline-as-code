@@ -13,3 +13,7 @@ services:
     build: ivy
     ports:
       - "8080:8080"
+  ivy-test:
+    build: ivy
+    ports:
+      - "8090:8080"
