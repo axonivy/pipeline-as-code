@@ -24,7 +24,7 @@ pipeline {
     stage ('preview') {
       steps {
         dir ('quick-start-tutorial') {
-          echo 'http://ivy-test:8080/ivy'
+          echo 'http://localhost:8090/ivy'
           sh 'curl -X POST ' +
             'http://ivy-test:8080/ivy/api/system/apps/my-demo-app ' +
             '-u admin:admin ' +

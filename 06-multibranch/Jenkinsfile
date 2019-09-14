@@ -22,10 +22,16 @@ pipeline {
     }
 
     stage ('preview') {
-      when {
-        branch 'master'
-      }
       steps {
+        dir ('quick-start-tutorial') {
+          echo 'http://localhost:8090/ivy'
+          sh 'curl -X POST ' +
+            "http://ivy-test:8080/ivy/api/system/apps/${env.BRANCH_NAME} "" +
+            '-u admin:admin ' +
+            '-H \'X-Requested-By: curl\' ' +
+            '-F fileToDeploy=@target/quick-start-tutorial-7.4.0-SNAPSHOT.iar'
+        }
+
         timeout(time: 2, unit: "HOURS") {
           input message: 'Deploy to production?', ok: 'Yes'
         }
