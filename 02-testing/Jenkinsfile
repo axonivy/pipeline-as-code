@@ -1,0 +1,23 @@
+pipeline {
+  agent {
+    docker {
+      image 'maven:3.6.2'
+    }
+  }
+
+  triggers {
+    cron '@midnight'
+    pollSCM '@hourly'
+  }
+
+  stages {
+    stage('packaging') {
+      steps {
+        dir ('quick-start-tutorial') {
+      	  sh 'mvn clean package -B'
+          archiveArtifacts 'target/*.iar'
+        }
+      }
+    }
+  }
+}
