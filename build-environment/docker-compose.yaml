@@ -10,6 +10,6 @@ services:
       - "5000:5000"
       - "50000:50000"
   ivy:
-    image: axonivy/axonivy-engine:dev
+    build: ivy
     ports:
       - "8080:8080"
