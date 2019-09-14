@@ -2,6 +2,7 @@ pipeline {
   agent {
     docker {
       image 'maven:3.6.2'
+      args '--network=build-environment_default'
     }
   }
 
@@ -19,5 +20,40 @@ pipeline {
         }
       }
     }
+
+    stage('deploy') {
+      steps {
+        sshagent(['ivyserver']) {
+          script {
+            dir ('quick-start-tutorial') {
+              sh "scp target/quick-start-tutorial-7.4.0-SNAPSHOT.iar ${sshConnection}:${deployFile}"
+              waitUntilDeployed()
+              checkDeploymentLog()
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+def waitUntilDeployed() {
+  timeout(2) {
+    waitUntil {
+      script {
+        def deployed = sh script: 'ssh ${sshConnection} [ ! -f ${deployFile} ]', returnStatus: true
+        return (deployed == 0);
+      }
+    }
+  }
+}
+  
+def checkDeploymentLog() {
+  def errorLogExist = sh script: 'ssh ${sshConnection} [ ! -f ${deployFile}.deploymentError ]', returnStatus: true
+  if (errorLogExist == 1) {
+    sh "ssh ${sshConnection} cat ${deployFile}.deploymentError"
+    currentBuild.result = 'FAILURE'
+  } else {
+    sh "ssh ${sshConnection} cat ${deployFile}.deploymentLog"
   }
 }
