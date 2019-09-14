@@ -32,8 +32,12 @@ pipeline {
             '-F fileToDeploy=@target/quick-start-tutorial-7.4.0-SNAPSHOT.iar'
         }
 
-        timeout(time: 2, unit: "HOURS") {
-          input message: 'Deploy to production?', ok: 'Yes'
+        script {
+          if (env.BRANCH_NAME == 'master') {
+            timeout(time: 2, unit: "HOURS") {
+              input message: 'Deploy to production?', ok: 'Yes'
+            }
+          }
         }
       }
     }
