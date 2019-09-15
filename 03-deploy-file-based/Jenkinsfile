@@ -15,8 +15,17 @@ pipeline {
     stage('packaging') {
       steps {
         dir ('quick-start-tutorial') {
-      	  sh 'mvn clean package -B'
+      	  sh 'mvn clean install -B'
           archiveArtifacts 'target/*.iar'
+        }
+      }
+    }
+
+    stage('testing') {
+      steps {
+        dir ('quick-start-tutorial-test') {
+      	  sh 'mvn clean test -B'
+          junit 'target/surefire-reports/*.xml'
         }
       }
     }
