@@ -19,5 +19,14 @@ pipeline {
         }
       }
     }
+
+    stage('testing') {
+      steps {
+        dir ('quick-start-tutorial-test') {
+      	  sh 'mvn clean test -B'
+          junit 'target/test-reports/*.xml'
+        }
+      }
+    }
   }
 }

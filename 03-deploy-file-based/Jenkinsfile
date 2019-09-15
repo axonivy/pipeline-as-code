@@ -26,7 +26,7 @@ pipeline {
         sshagent(['ivyserver']) {
           script {
             dir ('quick-start-tutorial') {
-              sh "scp target/quick-start-tutorial-7.4.0-SNAPSHOT.iar ${sshConnection}:${deployFile}"
+              sh "scp target/quick-start-tutorial-7.4.0-SNAPSHOT.iar ivy@example.com:/usr/lib/axonivy-engine/deploy/quick-start-tutorial.iar"
               waitUntilDeployed()
               checkDeploymentLog()
             }
@@ -41,7 +41,7 @@ def waitUntilDeployed() {
   timeout(2) {
     waitUntil {
       script {
-        def deployed = sh script: 'ssh ${sshConnection} [ ! -f ${deployFile} ]', returnStatus: true
+        def deployed = sh script: 'ssh ivy@example.com [ ! -f /usr/lib/axonivy-engine/deploy/quick-start-tutorial.iar ]', returnStatus: true
         return (deployed == 0);
       }
     }
@@ -49,11 +49,11 @@ def waitUntilDeployed() {
 }
   
 def checkDeploymentLog() {
-  def errorLogExist = sh script: 'ssh ${sshConnection} [ ! -f ${deployFile}.deploymentError ]', returnStatus: true
+  def errorLogExist = sh script: 'ssh ivy@example.com [ ! -f /usr/lib/axonivy-engine/deploy/quick-start-tutorial.iar.deploymentError ]', returnStatus: true
   if (errorLogExist == 1) {
-    sh "ssh ${sshConnection} cat ${deployFile}.deploymentError"
+    sh "ssh ivy@example.com cat /usr/lib/axonivy-engine/deploy/quick-start-tutorial.iar.deploymentError"
     currentBuild.result = 'FAILURE'
   } else {
-    sh "ssh ${sshConnection} cat ${deployFile}.deploymentLog"
+    sh "ssh ivy@example.com cat /usr/lib/axonivy-engine/deploy/quick-start-tutorial.iar.deploymentLog"
   }
 }
