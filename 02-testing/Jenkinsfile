@@ -24,7 +24,7 @@ pipeline {
       steps {
         dir ('quick-start-tutorial-test') {
       	  sh 'mvn clean test -B'
-          junit 'target/test-reports/*.xml'
+          junit 'target/surefire-reports/*.xml'
         }
       }
     }

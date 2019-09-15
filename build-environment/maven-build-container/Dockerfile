@@ -11,5 +11,8 @@ RUN curl -L https://developer.axonivy.com/permalink/nightly/axonivy-engine-slim.
     rm /tmp/engine.zip
 
 # cache maven dependencies
-ADD . /tmp/project
-RUN mvn -f /tmp/project verify dependency:go-offline -B
+ADD quick-start-tutorial /tmp/project
+ADD quick-start-tutorial-test /tmp/project-test
+
+RUN mvn -f /tmp/project install dependency:go-offline -B && \
+    mvn -f /tmp/project-test verify dependency:go-offline -B
