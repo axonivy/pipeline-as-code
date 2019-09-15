@@ -14,7 +14,7 @@ pipeline {
     stage('packaging') {
       steps {
         dir ('quick-start-tutorial') {
-      	  sh 'mvn clean package -B'
+      	  sh 'mvn clean install -B'
           archiveArtifacts 'target/*.iar'
         }
       }
