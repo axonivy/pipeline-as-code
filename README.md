@@ -1,20 +1,32 @@
 # Pipeline as Code with Axon.ivy
 
-**Pipeline as Code** is powerful, increases quality
-in your CI/CD environment and saves your valuable time.
+**Pipeline as Code** is powerful, increases quality in your CI/CD environment and saves your valuable time.
 
 Here we show how you can use **Pipeline as Code** with Axon.ivy.
-We are using Jenkins as CI/CD build infrastructure
-which provides **Pipeline as Codes** with `Jenkinsfile`.
+We are using Jenkins as CI/CD build infrastructure which provides **Pipeline as Codes** with `Jenkinsfile`.
 
-# Setup
+![](blueocean.png)
 
-1. Start Jenkins
+![](testing.png)
 
-   Execute `docker-compose up` in directory `build-environment`.
+![](input.png)
 
-2. [optional] Build maven image
+## Setup
 
-   This is only for demo purpose to get fast maven builds.
-   Execute `build.sh` in directory `build-environment/maven-build-container`.
-   This will build a maven container with external dependencies such as Axon.ivy Engine and Maven dependencies.
+1. Start Build Environment
+
+    Start this build environment by executing `docker-compose up` in directory `build-environment`.
+
+    This will start a Jenkins server on http://localhost and two Axon.ivy Engines. One simulates the production engine on http://localhost:8080 and one simulates a test engine http://localhost:8090.
+
+2. Login in Jenkins
+
+   Goto http://localhost/login and login with **admin/admin**.
+
+3. Scan Multi-Branch Pipeline
+    
+   Goto a a specific build job on Jenkins e.g http://localhost/job/01-packaging/ and click **Scan Multibranch Pipeline Now**
+
+4. Trigger build
+
+   Manually execute the appearing build in the list on the right site (master).
