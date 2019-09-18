@@ -6,10 +6,6 @@ pipeline {
     }
   }
 
-  triggers {
-    cron '@midnight'
-  }
-
   stages {
     stage('packaging') {
       steps {

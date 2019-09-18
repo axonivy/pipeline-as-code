@@ -5,11 +5,6 @@ pipeline {
     }
   }
 
-  triggers {
-    cron '@midnight'
-    pollSCM '@hourly'
-  }
-
   stages {
     stage('packaging') {
       steps {
