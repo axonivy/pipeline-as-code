@@ -1,4 +1,4 @@
-# Pipeline as Code with Axon.ivy
+# Pipeline as Code with Axon Ivy
 
 **Pipeline as Code** is powerful, increases quality in your CI/CD environment and saves your valuable time.
 
